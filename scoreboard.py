@@ -23,3 +23,5 @@ class Scoreboard(Turtle):
         self.goto(230, 270)
         self.write(f"Lives: {self.lives}", align="right", font=FONT)
 
+    def lose_life(self):
+        self.lives -= 1

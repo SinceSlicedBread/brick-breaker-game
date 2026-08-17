@@ -12,7 +12,8 @@ class Ball(Turtle):
 
     def find_paddle(self, paddle):
         paddle_x, paddle_y = paddle.pos()
-        self.goto(paddle_x, paddle_y + 20)
+        self.goto(paddle_x, paddle_y + 25)
+        self.setheading(45)
 
 
     def set_ball_direction(self, heading):
@@ -39,4 +40,15 @@ class Ball(Turtle):
         self.setheading(new_heading)
         self.move_y *= -1
 
+    def detect_collision(self, ball_x, ball_y, ball_heading, ball_to_paddle):
+    ## detect collision with either side wall and bounce off
+        if ball_x > 230 or ball_x < -230:
+            self.bounce_x(ball_heading)
 
+        ## detect collision with back wall and bounce off
+        if ball_y > 280:
+            self.bounce_y(ball_heading)
+
+        ## detect collision with paddle and bounce off
+        if ball_to_paddle < 25:
+            self.bounce_y(ball_heading)
