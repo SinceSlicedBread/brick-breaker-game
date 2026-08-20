@@ -1,5 +1,4 @@
 from turtle import Screen
-import random
 import time
 from paddle import Paddle
 from ball import Ball
@@ -18,16 +17,17 @@ paddle = Paddle()
 ball = Ball()
 
 ball.find_paddle(paddle)
-## improve ball direction starting options later
-#ball.set_ball_direction(random.choice((45, 135)))
 ball.set_ball_direction(45)
+wall = []
 
 def create_wall():
+    global wall
     line = 8
     brick_no = 9
     start_y = 250
     while line > 0:
         start_x = -210
+
         while brick_no > 0:
             brick = Brick()
             brick.goto(start_x, start_y)
@@ -36,12 +36,15 @@ def create_wall():
 
             if line <= 2:
                 brick.color("green")
+                brick.value = 10
             elif line <= 4:
                 brick.color("blue")
+                brick.value = 20
             elif line <= 6:
                 brick.color("orange")
+                brick.value = 30
 
-
+            wall.append(brick)
 
         start_y -= 30
         line -= 1
@@ -50,11 +53,10 @@ def create_wall():
 
 create_wall()
 
-
 screen.onkey(paddle.move_right, "Right")
 screen.onkey(paddle.move_left, "Left")
 
-while scoreboard.lives >= 0:
+while scoreboard.lives >= 0 and scoreboard.score < 1800:
     time.sleep(ball.speed)
     screen.update()
     ball.move_ball()
@@ -62,6 +64,13 @@ while scoreboard.lives >= 0:
                           ball.ycor(),
                           ball.heading(),
                           ball.distance(paddle))
+
+    if scoreboard.score >= 600 and ball.speed == 0.1:
+        ball.speed -= 0.03
+        paddle.x_move += 5
+    elif scoreboard.score >= 1200 and ball.speed == 0.07:
+        ball.speed -= 0.02
+
     if ball.ycor() < -320:
         scoreboard.lose_life()
         scoreboard.update_scoreboard()
@@ -71,6 +80,12 @@ while scoreboard.lives >= 0:
         ball.set_ball_direction(45)
         ball.find_paddle(paddle)
 
+    for brick in wall:
+        if ball.distance(brick) <= 20:
+            ball.bounce_y(ball.heading())
+            brick.goto(1000,1000)
+            scoreboard.score += brick.value
+            scoreboard.update_scoreboard()
 
-
+scoreboard.check_highscore()
 screen.exitonclick()

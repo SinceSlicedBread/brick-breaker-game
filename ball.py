@@ -5,7 +5,7 @@ class Ball(Turtle):
         super().__init__()
         self.penup()
         self.color("white")
-        self.shape("turtle")
+        self.shape("circle")
         self.move_x = 10
         self.move_y = 10
         self.speed = 0.1
@@ -13,12 +13,11 @@ class Ball(Turtle):
     def find_paddle(self, paddle):
         paddle_x, paddle_y = paddle.pos()
         self.goto(paddle_x, paddle_y + 25)
-        self.setheading(45)
+        #self.setheading(45)
 
 
     def set_ball_direction(self, heading):
         self.setheading(heading)
-
 
     def move_ball(self):
         new_x = self.xcor() + self.move_x
@@ -50,5 +49,5 @@ class Ball(Turtle):
             self.bounce_y(ball_heading)
 
         ## detect collision with paddle and bounce off
-        if ball_to_paddle < 25:
+        if ball_to_paddle < 50 and self.ycor() < -240:
             self.bounce_y(ball_heading)

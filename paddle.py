@@ -2,6 +2,7 @@ from turtle import Turtle
 
 class Paddle(Turtle):
 
+
     def __init__(self):
         super().__init__()
         self.shape("square")
@@ -11,7 +12,7 @@ class Paddle(Turtle):
         self.speed("fast")
         self.goto(0, -260)
         self.shapesize(stretch_wid=1, stretch_len=4)
-        self.x_move = 20
+        self.x_move = 30
 
 
     def move_right(self):
@@ -22,4 +23,3 @@ class Paddle(Turtle):
     def move_left(self):
         if self.xcor() > -210:
             self.forward(self.x_move)
-
